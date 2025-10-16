@@ -3,7 +3,7 @@ bits 64
 section .text
 global _ft_strcmp
 
-; int ft_strcmp(const char *s1, const char *s2)
+; int ft_strcmp(const char *s1, const char *s2);
 _ft_strcmp:
 	xor rcx, rcx
 
