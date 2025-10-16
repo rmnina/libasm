@@ -8,6 +8,7 @@ size_t	ft_strlen(const char *str);
 char	*ft_strcpy(char *dst, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
 ssize_t	ft_write(int filedes, const void *buff, size_t nbytes);
+ssize_t	ft_read(int filedes, const void *buff, size_t nbytes);
 
 int	main(int argc, char **argv)
 {
@@ -81,7 +82,22 @@ int	main(int argc, char **argv)
 	}
 	else if (!strcmp(argv[1], "READ"))
 	{
-		int fd = open(argv[2], O_RDONLY);
+		int 		fd = open(argv[2], O_RDONLY);
+		ssize_t		bytes = 0;
+		ssize_t		TEST_bytes = 0;
+		char		buffer[1024];
+		char		TEST_buffer[1024];
+
+		bzero(buffer, sizeof(buffer));
+		bzero(TEST_buffer, sizeof(TEST_buffer));
+
+		bytes = ft_read(fd, &buffer, 1024);
+		printf("Content of file is %s. TOTAL: %lu bytes.\n", buffer, bytes);
+
+		close(fd);
+		fd = open(argv[2], O_RDONLY);		
+		TEST_bytes = read(fd, &TEST_buffer, 1024);
+		printf("Content of file with STD read is %s. TOTAL: %lu bytes. \n", TEST_buffer, TEST_bytes);
 		//TODO continue read tests
 	}
 	return (0);
