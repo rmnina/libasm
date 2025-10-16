@@ -15,10 +15,9 @@ _ft_write:
 	ret
 
 .error_handler:
-	mov rdi, rax
+	mov rdi, rax				; save error value in rdi
 	; LINUX neg rdi				; converts error into positive value
-	call ___error
-	mov [rax], rdi
-	mov rax, -1
-; TODO : put error code in errno. macos doesn't let me lmao (or skill issue maybe)
+	call ___error				; call error to get location of erno in rax
+	mov [rax], rdi				; write errno in the location contained in rax ([] is the accessor)
+	mov rax, -1					; sets rax to -1
 	ret
