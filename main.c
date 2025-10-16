@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 size_t	ft_strlen(const char *str);
 char	*ft_strcpy(char *dst, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
+ssize_t	ft_write(int filedes, const void *buff, size_t nbytes);
 
 int	main(int argc, char **argv)
 {
@@ -52,6 +55,34 @@ int	main(int argc, char **argv)
 		printf("Compare on two args gives %d\n", ft_strcmp(argv[2], argv[3]));
 		printf("STD compare on two args gives %d\n", strcmp(argv[2], argv[3]));
 	}
+	else if (!strcmp(argv[1], "WRITE"))
+	{
+		if (argc < 4)
+		{
+			printf("\nFunction write on stdout just above: %lu bytes\n", ft_write(1, argv[2], ft_strlen(argv[2])));
+			printf("\nSTD write on stdout just above:  %lu bytes\n", write(1, argv[2], ft_strlen(argv[2])));
 
+			printf("\n(You can use a filename as a third argument to write in a file).\n");
+		}
+		else if (argc == 4)
+		{
+			char	*filename = argv[3];
+			int fd = open(filename, O_RDWR | O_CREAT, 0644);
+
+			char	tmp[256] = "TEST_";
+			char	*TEST_file = strcat(tmp, filename);
+			int fd2 = open(TEST_file, O_RDWR | O_CREAT, 0644);
+
+			printf("Function write in file : %lu bytes\n", ft_write(fd, argv[2], ft_strlen(argv[2])));
+			printf("STD write in file: %lu bytes\n", write(fd2, argv[2], ft_strlen(argv[2])));
+			close (fd);
+			close (fd2);
+		}
+	}
+	else if (!strcmp(argv[1], "READ"))
+	{
+		int fd = open(argv[2], O_RDONLY);
+		//TODO continue read tests
+	}
 	return (0);
 }
