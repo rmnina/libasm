@@ -11,7 +11,7 @@ You can include the library in your project with ```#include "libasm.h"```, and 
 To compile and use my main test file, you can use ```make test```.
 
 
-## :fire::fire: RESSOURCES :fire: :fire:
+## :fire::fire: RESOURCES :fire: :fire:
 
 Here are some ressources I used to learn basic assembly!
 
