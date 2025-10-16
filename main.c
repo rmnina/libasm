@@ -9,6 +9,7 @@ char	*ft_strcpy(char *dst, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
 ssize_t	ft_write(int filedes, const void *buff, size_t nbytes);
 ssize_t	ft_read(int filedes, const void *buff, size_t nbytes);
+char	*ft_strdup(const char *s1);
 
 int	main(int argc, char **argv)
 {
@@ -98,7 +99,25 @@ int	main(int argc, char **argv)
 		fd = open(argv[2], O_RDONLY);		
 		TEST_bytes = read(fd, &TEST_buffer, 1024);
 		printf("Content of file with STD read is %s. TOTAL: %lu bytes. \n", TEST_buffer, TEST_bytes);
-		//TODO continue read tests
+	}
+	else if (!strcmp(argv[1], "DUP"))
+	{
+		char	*dup = ft_strdup(argv[2]);
+		if (!dup)
+			printf("Malloc failed!\n");
+		else
+		{
+			printf("DUP is %s\n", dup);
+			free(dup);
+		}
+		char	*TEST_dup = strdup(argv[2]);
+		if (!TEST_dup)
+			printf ("Malloc STD failed!\n");
+		else
+		{
+			printf("STD DUP is %s\n", dup);
+			free(TEST_dup);
+		}
 	}
 	return (0);
 }

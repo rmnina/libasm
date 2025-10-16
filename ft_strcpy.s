@@ -12,7 +12,7 @@ _ft_strcpy:
 	mov al, [rsi + rcx]		; copies the current char [rsi (src) + rcx (counter)] into a 8bytes temporary register
 	mov [rdi + rcx], al		; copies the char in al into the current position in rdi (dest)
 							; the temporary register is used because the instruction "mov" needs at least 1 register
-	cmp byte [rsi + rcx], 0	; verifies if we reached '\0'
+	test al, al				; verifies if we reached '\0' by performing al & al
 	je .return				; jumps to return if yes
 
 	inc rcx					; increments the counter that indicates the position of the char
