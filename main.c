@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include "libasm.h"
 
 int	main(int argc, char **argv)
@@ -40,8 +41,10 @@ int	main(int argc, char **argv)
 			return (printf("ERROR ALLOCATION\n"), 1);
 		}
 
-		printf("Copy with dest too small with std function... Dest is %s\n", strcpy(PROOF_dest2, src));	
+		printf("Copy with dest too small with std function... Dest is %s\n", strcpy(PROOF_dest2, src));
 		printf("Copy with dest too small of src into dest... Dest is %s\n", ft_strcpy(dest2, src));
+		free (dest2);
+		free (PROOF_dest2);
 	}
 	else if (!strcmp(argv[1], "COMPARE"))
 	{
@@ -56,8 +59,9 @@ int	main(int argc, char **argv)
 		if (argc < 4)
 		{
 			printf("\nFunction write on stdout just above: %lu bytes\n", ft_write(1, argv[2], ft_strlen(argv[2])));
+			printf("Errno with write is %d\n", errno);
 			printf("\nSTD write on stdout just above:  %lu bytes\n", write(1, argv[2], ft_strlen(argv[2])));
-
+			printf("Errno with STD write is %d\n", errno);
 			printf("\n(You can use a filename as a third argument to write in a file).\n");
 		}
 		else if (argc == 4)
@@ -65,12 +69,15 @@ int	main(int argc, char **argv)
 			char	*filename = argv[3];
 			int fd = open(filename, O_RDWR | O_CREAT, 0644);
 
-			char	tmp[256] = "TEST_";
+			printf("Function write in file : %lu bytes\n", ft_write(fd, argv[2], ft_strlen(argv[2])));
+			printf("Errno with write is %d\n", errno);
+
+			char	tmp[256] = "LIBC_";
 			char	*TEST_file = strcat(tmp, filename);
 			int fd2 = open(TEST_file, O_RDWR | O_CREAT, 0644);
 
-			printf("Function write in file : %lu bytes\n", ft_write(fd, argv[2], ft_strlen(argv[2])));
 			printf("STD write in file: %lu bytes\n", write(fd2, argv[2], ft_strlen(argv[2])));
+			printf("Errno with STD write is %d\n", errno);
 			close (fd);
 			close (fd2);
 		}
@@ -88,28 +95,40 @@ int	main(int argc, char **argv)
 
 		bytes = ft_read(fd, &buffer, 1024);
 		printf("Content of file is %s. TOTAL: %lu bytes.\n", buffer, bytes);
+		printf("Errno with read is %d\n", errno);
 
 		close(fd);
 		fd = open(argv[2], O_RDONLY);		
 		TEST_bytes = read(fd, &TEST_buffer, 1024);
 		printf("Content of file with STD read is %s. TOTAL: %lu bytes. \n", TEST_buffer, TEST_bytes);
+		printf("Errno with STD read is %d\n", errno);
 	}
 	else if (!strcmp(argv[1], "DUP"))
 	{
 		char	*dup = ft_strdup(argv[2]);
 		if (!dup)
+		{
 			printf("Malloc failed!\n");
+			printf("Errno with strdup is %d\n", errno);
+			errno = 0;
+		}
 		else
 		{
 			printf("DUP is %s\n", dup);
+			printf("Errno with strdup is %d\n", errno);
+			errno = 0;
 			free(dup);
 		}
 		char	*TEST_dup = strdup(argv[2]);
 		if (!TEST_dup)
-			printf ("Malloc STD failed!\n");
+		{
+			printf ("Malloc STD dup failed!\n");
+			printf("Errno with STD strdup is %d\n", errno);
+		}
 		else
 		{
 			printf("STD DUP is %s\n", dup);
+			printf("Errno with STD strdup is %d\n", errno);
 			free(TEST_dup);
 		}
 	}

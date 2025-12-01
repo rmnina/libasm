@@ -1,10 +1,10 @@
 bits 64
 
 section .text
-global _ft_strcmp
+global ft_strcmp
 
 ; int ft_strcmp(const char *s1, const char *s2);
-_ft_strcmp:
+ft_strcmp:
 	xor rcx, rcx
 
 .loop:
@@ -23,3 +23,5 @@ _ft_strcmp:
 	sub dl, al			; substracts s2[i] from s1[i]
 	movsx rax, dl		; expands the result to 64bits and put it into rax
 	ret					; return to the caller
+
+section .note.GNU-stack

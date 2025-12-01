@@ -1,10 +1,10 @@
 bits 64						; this code is for a 64bits architecture
 
 section .text				; declaring an executable section of code
-global _ft_strlen			; declaring the symbol ft_strlen visible outside of this code (for a C program to use)
+global ft_strlen			; declaring the symbol ft_strlen visible outside of this code (for a C program to use)
 
 ; size_t ft_strlen(const char *str);
-_ft_strlen:
+ft_strlen:
 	xor rcx, rcx			; sets rcx to 0. Equivalent to "mov rcx, 0" but much faster
 							; rcx is used as a counter to count characters
 
@@ -20,5 +20,4 @@ _ft_strlen:
 	mov rax, rcx			; put rcx into the returned value
 	ret						; we go back to the caller
 
-
-
+section .note.GNU-stack
