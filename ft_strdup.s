@@ -5,7 +5,7 @@ global _ft_strdup
 extern _ft_strlen
 extern _ft_strcpy
 extern _malloc
-extern ___error				; TODO : change for linux
+extern _error
 
 ; char *strdup(const char *s1);
 _ft_strdup:
@@ -26,7 +26,7 @@ _ft_strdup:
 
 .error_handler:
 	mov rdi, 12				; code ENONEM on MacOS. TODO : modify for linux
-	call ___error
+	call _error
 	mov [rax], rdi
 	mov rax, 0
 	pop rbx
